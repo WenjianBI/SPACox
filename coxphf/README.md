@@ -34,4 +34,5 @@ a=benchmark(coxphf(Surv(start,end,event)~X1+X2,data=Data),replications = 10)
 1. We update the loop with a smarter order to subtract exp(risk) et al. of subjects whose start_time < current_time_in_loop. The update can decrease computation time from N^2 to 2N.
 2. We add some if statement to avoid large amount of unnecessary calculation. This can save computation from 2N to 2K, where K is event number.
 3. We use the code in section 'ifastmode=T' to replace the code in section 'ifastmode=F'.
+4. Note that current coxphf package only supports Breslow method to handle ties.
 
