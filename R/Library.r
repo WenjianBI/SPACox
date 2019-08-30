@@ -151,6 +151,9 @@ SPACox_Null_Model = function(formula,
 #'
 #' # we recommand using column of 'p.value.spa' to associate genotype with time-to-event phenotypes
 #' head(SPACox.res)
+#'
+#' # The below is an example code to use survival package
+#' coxph(Surv(time,event)~Cov1+Cov2+Geno.mtx[,1], data=Phen.mtx)
 #' @export
 SPACox = function(obj.null,
                   Geno.mtx,

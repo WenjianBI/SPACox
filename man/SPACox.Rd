@@ -90,4 +90,7 @@ SPACox.res = SPACox(obj.null, Geno.mtx)
 
 # we recommand using column of 'p.value.spa' to associate genotype with time-to-event phenotypes
 head(SPACox.res)
+
+# The below is an example code to use survival package
+coxph(Surv(time,event)~Cov1+Cov2+Geno.mtx[,1], data=Phen.mtx)
 }
