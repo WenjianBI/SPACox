@@ -13,6 +13,9 @@ Current version is 0.1.0. For older version and version update information, ples
 
 Please do not hesitate to contact me (wenjianb@umich.edu) if you meet any problem. Suggestions or comments are also welcome.
 
+### Reference
+
+Wenjian Bi, Lars G. Fritsche, Bhramar Mukherjee, Sehee Kim, Seunggeun Lee, A Fast and Accurate Method for Genome-Wide Time-to-Event Data Analysis and Its Application to UK Biobank. American Journal of Human Genetics (2020), https://doi.org/10.1016/j.ajhg.2020.06.003
 
 ## coxphf
 This directory contains some discussions about R package coxphf, an R package to conduct Firth's correction for Cox regression.
