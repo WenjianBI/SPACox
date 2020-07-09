@@ -27,7 +27,9 @@ SPACox_Null_Model = function(formula,
   obj.coxph = coxph(formula, data=data, x=T, ...)
 
   ### Check input arguments
-  p2g = check_input(pIDs, gIDs, obj.coxph, range)
+  obj.check = check_input(pIDs, gIDs, obj.coxph, range)
+  p2g = obj.check$p2g
+  pIDs = obj.check$pIDs
 
   ### Get the covariate matrix to adjust for genotype
   mresid = obj.coxph$residuals
@@ -74,7 +76,8 @@ SPACox_Null_Model = function(formula,
           tX=tX,
           X.invXX=X.invXX,
           p2g=p2g,
-          gIDs)
+          gIDs,
+          pIDs)
 
   class(re)<-"SPACox_NULL_Model"
   return(re)
@@ -382,8 +385,8 @@ check_input = function(pIDs, gIDs, obj.coxph, range)
       stop("Number of input data is larger than length(pIDs).")
     pIDsNA = pIDs[posNA]
 
-    print("Due to missing data in response/indicators, the following entries are removed from analysis.")
-    print(cbind(posNA=posNA, pIDsNA=pIDsNA))
+    print(paste0("Due to missing data in response/indicators, ",length(posNA)," entries are removed from analysis."))
+    print(head(cbind(posNA=posNA, pIDsNA=pIDsNA)))
 
     pIDs = pIDs[-1*posNA]  # remove IDs with missing data
   }
@@ -410,7 +413,7 @@ check_input = function(pIDs, gIDs, obj.coxph, range)
       p2g = match(pIDs, gIDs)
   }
 
-  return(p2g)
+  return(list(p2g=p2g,pIDs=pIDs))
 }
 
 check_input1 = function(obj.null, Geno.mtx, par.list)
