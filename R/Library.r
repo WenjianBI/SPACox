@@ -130,7 +130,7 @@ SPACox_Null_Model = function(formula,
 #' # Simulation phenotype and genotype
 #' N = 10000
 #' nSNP = 1000
-#' maf = 0.1
+#' MAF = 0.1
 #' Phen.mtx = data.frame(ID = paste0("IID-",1:N),
 #'                       event=rbinom(N,1,0.5),
 #'                       time=runif(N),
