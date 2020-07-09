@@ -4,9 +4,16 @@
 \alias{SPACox}
 \title{SaddlePoint Approximation implementation of a surival analysis}
 \usage{
-SPACox(obj.null, Geno.mtx, Cutoff = 2, impute.method = "fixed",
-  missing.cutoff = 0.15, min.maf = 1e-04, CovAdj.cutoff = 5e-05,
-  G.model = "Add")
+SPACox(
+  obj.null,
+  Geno.mtx,
+  Cutoff = 2,
+  impute.method = "fixed",
+  missing.cutoff = 0.15,
+  min.maf = 1e-04,
+  CovAdj.cutoff = 5e-05,
+  G.model = "Add"
+)
 }
 \arguments{
 \item{obj.null}{an R object returned from function SPACox_Null_Model()}
@@ -69,7 +76,7 @@ Users are responsible to check the consistency between pIDs and formula, and the
 # Simulation phenotype and genotype
 N = 10000
 nSNP = 1000
-maf = 0.1
+MAF = 0.1
 Phen.mtx = data.frame(ID = paste0("IID-",1:N),
                       event=rbinom(N,1,0.5),
                       time=runif(N),
@@ -90,6 +97,13 @@ SPACox.res = SPACox(obj.null, Geno.mtx)
 
 # we recommand using column of 'p.value.spa' to associate genotype with time-to-event phenotypes
 head(SPACox.res)
+
+## missing data in response/indicator variables is also supported. Please do not remove pIDs of subjects with missing data, the program will do it.
+Phen.mtx$event[2] = NA
+Phen.mtx$Cov1[5] = NA
+obj.null = SPACox_Null_Model(Surv(time,event)~Cov1+Cov2, data=Phen.mtx,
+                             pIDs=Phen.mtx$ID, gIDs=rownames(Geno.mtx))
+SPACox.res = SPACox(obj.null, Geno.mtx)
 
 # The below is an example code to use survival package
 coxph(Surv(time,event)~Cov1+Cov2+Geno.mtx[,1], data=Phen.mtx)

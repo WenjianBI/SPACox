@@ -4,8 +4,15 @@
 \alias{SPACox_Null_Model}
 \title{Fits a NULL model for SPACox}
 \usage{
-SPACox_Null_Model(formula, data = NULL, pIDs = NULL, gIDs = NULL,
-  range = c(-100, 100), length.out = 10000, ...)
+SPACox_Null_Model(
+  formula,
+  data = NULL,
+  pIDs = NULL,
+  gIDs = NULL,
+  range = c(-100, 100),
+  length.out = 10000,
+  ...
+)
 }
 \arguments{
 \item{formula}{a formula to be passed to function coxph(). For more details, please refer to package survival.}

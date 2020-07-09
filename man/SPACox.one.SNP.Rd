@@ -4,9 +4,16 @@
 \alias{SPACox.one.SNP}
 \title{SaddlePoint Approximation implementation of Cox regression surival analysis (One-SNP-version)}
 \usage{
-SPACox.one.SNP(g, obj.null, Cutoff = 2, impute.method = "fixed",
-  missing.cutoff = 0.15, min.maf = 1e-04, CovAdj.cutoff = 5e-05,
-  G.model = "Add")
+SPACox.one.SNP(
+  g,
+  obj.null,
+  Cutoff = 2,
+  impute.method = "fixed",
+  missing.cutoff = 0.15,
+  min.maf = 1e-04,
+  CovAdj.cutoff = 5e-05,
+  G.model = "Add"
+)
 }
 \arguments{
 \item{g}{a numeric genotype vector. Missing genotype should be coded as NA. Both hard-called and imputed genotype data are supported.}

@@ -1,12 +1,12 @@
 Package: SPACox
 Type: Package
 Title: SaddlePoint Approximation implementation of survival analysis 
-Version: 0.1.0
-Published: 2019-08-29
+Version: 0.1.1
+Published: 2020-07-09
 Authors: Wenjian Bi, Shawn (Seunggeun) Lee, Sehee Kim
 Maintainer: Wenjian Bi <wenjianb@umich.edu>
 Description: A fast and accurate method for a genome-wide survival analysis on a large-Scale Dataset. SPACox fits a null Cox proportional hazard model and then uses a saddlepoint approximation (SPA) to calibrate the score statistics.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0

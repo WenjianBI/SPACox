@@ -152,6 +152,13 @@ SPACox_Null_Model = function(formula,
 #' # we recommand using column of 'p.value.spa' to associate genotype with time-to-event phenotypes
 #' head(SPACox.res)
 #'
+#' ## missing data in response/indicator variables is also supported. Please do not remove pIDs of subjects with missing data, the program will do it.
+#' Phen.mtx$event[2] = NA
+#' Phen.mtx$Cov1[5] = NA
+#' obj.null = SPACox_Null_Model(Surv(time,event)~Cov1+Cov2, data=Phen.mtx,
+#'                              pIDs=Phen.mtx$ID, gIDs=rownames(Geno.mtx))
+#' SPACox.res = SPACox(obj.null, Geno.mtx)
+#'
 #' # The below is an example code to use survival package
 #' coxph(Surv(time,event)~Cov1+Cov2+Geno.mtx[,1], data=Phen.mtx)
 #' @export
@@ -366,15 +373,42 @@ K2 = function(t, G2NB, G2NA, NBset, N0, obj.null)
 
 check_input = function(pIDs, gIDs, obj.coxph, range)
 {
-  if(is.null(pIDs) & is.null(gIDs)) stop("Arguments 'pIDs' and 'gIDs' are required in case of potential errors. For more information, please refer to 'Details'.")
-  if(any(sort(unique(pIDs))!=sort(unique(gIDs)))) stop("unique(pIDs) should be the same as unique(gIDs).")
-  if(anyDuplicated(gIDs)!=0) stop("Argument 'gIDs' should not have a duplicated element.")
-  if(range[2]!=-1*range[1]) stop("range[2] should be -1*range[1]")
-  mresid = obj.coxph$residuals
-  if(length(mresid)!=length(pIDs)) stop("Argument 'pIDs' should be of the same length as input data.")
+  if(is.null(pIDs) & is.null(gIDs))
+    stop("Arguments 'pIDs' and 'gIDs' are required in case of potential errors. For more information, please refer to 'Details'.")
 
-  if(all(pIDs == gIDs)) p2g = NULL
-  else p2g = match(pIDs, gIDs)
+  if(!is.null(obj.coxph$na.action)){
+    posNA = c(obj.coxph$na.action)
+    if(any(posNA > length(pIDs)))
+      stop("Number of input data is larger than length(pIDs).")
+    pIDsNA = pIDs[posNA]
+
+    print("Due to missing data in response/indicators, the following entries are removed from analysis.")
+    print(cbind(posNA=posNA, pIDsNA=pIDsNA))
+
+    pIDs = pIDs[-1*posNA]  # remove IDs with missing data
+  }
+
+  if(any(!is.element(pIDs, gIDs)))
+    stop("All elements in pIDs should be also in gIDs.")
+
+  if(anyDuplicated(gIDs)!=0)
+    stop("Argument 'gIDs' should not have a duplicated element.")
+
+  if(range[2]!=-1*range[1])
+    stop("range[2] should be -1*range[1]")
+
+  mresid = obj.coxph$residuals
+
+  if(length(mresid)!=length(pIDs))
+    stop("length(mresid)!=length(pIDs) where mresid is the martingale residuals from coxph() in survival package.")
+
+  p2g = NULL
+  if(length(pIDs)!=length(gIDs)){
+    p2g = match(pIDs, gIDs)
+  }else{
+    if(any(pIDs != gIDs))
+      p2g = match(pIDs, gIDs)
+  }
 
   return(p2g)
 }
