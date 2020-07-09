@@ -379,6 +379,8 @@ check_input = function(pIDs, gIDs, obj.coxph, range)
   if(is.null(pIDs) & is.null(gIDs))
     stop("Arguments 'pIDs' and 'gIDs' are required in case of potential errors. For more information, please refer to 'Details'.")
 
+  pIDs = as.character(pIDs)
+  gIDs = as.character(gIDs)
   if(!is.null(obj.coxph$na.action)){
     posNA = c(obj.coxph$na.action)
     if(any(posNA > length(pIDs)))
