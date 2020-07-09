@@ -386,6 +386,7 @@ check_input = function(pIDs, gIDs, obj.coxph, range)
     pIDsNA = pIDs[posNA]
 
     print(paste0("Due to missing data in response/indicators, ",length(posNA)," entries are removed from analysis."))
+    print("If concerned about the power loss, we suggest users impute data first and then use SPACox package.")
     print(head(cbind(posNA=posNA, pIDsNA=pIDsNA)))
 
     pIDs = pIDs[-1*posNA]  # remove IDs with missing data
