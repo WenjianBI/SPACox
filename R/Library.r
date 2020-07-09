@@ -66,18 +66,18 @@ SPACox_Null_Model = function(formula,
 
   var.resid = var(mresid)
 
-  re=list(resid=mresid,
-          var.resid=var.resid,
-          K_org_emp=K_org_emp,
-          K_1_emp=K_1_emp,
-          K_2_emp=K_2_emp,
-          Call=Call,
-          obj.coxph=obj.coxph,
-          tX=tX,
-          X.invXX=X.invXX,
-          p2g=p2g,
-          gIDs,
-          pIDs)
+  re=list(resid = mresid,
+          var.resid = var.resid,
+          K_org_emp = K_org_emp,
+          K_1_emp = K_1_emp,
+          K_2_emp = K_2_emp,
+          Call = Call,
+          obj.coxph = obj.coxph,
+          tX = tX,
+          X.invXX = X.invXX,
+          p2g = p2g,
+          gIDs = gIDs,
+          pIDs = pIDs)
 
   class(re)<-"SPACox_NULL_Model"
   return(re)
