@@ -2,5 +2,8 @@
 
 export(SPACox)
 export(SPACox.one.SNP)
+export(SPACox.plink)
 export(SPACox_Null_Model)
+import(data.table)
+import(seqminer)
 import(survival)
