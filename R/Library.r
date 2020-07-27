@@ -234,6 +234,7 @@ SPACox.one.SNP = function(g,
                           CovAdj.cutoff = 5e-5,
                           G.model = "Add")
 {
+  g[g==-9]=NA  # since we add plink input
   ## calculate MAF and update genotype vector
   MAF = mean(g, na.rm=T)/2
   N = length(g)
