@@ -255,7 +255,7 @@ SPACox.one.SNP = function(g,
   if(G.model=="Dom") g = ifelse(g>=1,1,0)
   if(G.model=="Rec") g = ifelse(g<=1,0,1)
 
-  if(MAF < min.maf)
+  if(MAF < min.maf || missing.rate > missing.cutoff)
     return(c(MAF, missing.rate, NA, NA, NA, NA, NA))
 
   if(!is.null(obj.null$p2g))
