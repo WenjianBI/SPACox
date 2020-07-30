@@ -90,8 +90,8 @@ SPACox.plink = function(obj.null,
   if(!file.exists(fam.file)) stop("Could not find paste0(plink.file,'.fam')")
   if(file.exists(output.file)) stop("'output.file' existed. Please give a different 'output.file' or remove the existing 'output.file'.")
 
-  fam.data = read.table(fam.file)
-  bim.data = read.table(bim.file)
+  fam.data = read.table(fam.file, stringsAsFactors = F)
+  bim.data = read.table(bim.file, stringsAsFactors = F)
 
   N = nrow(fam.data)
   M = nrow(bim.data)
