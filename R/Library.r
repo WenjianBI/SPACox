@@ -241,6 +241,10 @@ SPACox.one.SNP = function(g,
   pos.na = which(is.na(g))
   missing.rate = length(pos.na)/N
 
+  if(missing.rate == 1){
+    return(c(NA, 1, NA, NA, NA, NA, NA))
+  }
+
   if(missing.rate != 0){
     if(impute.method=="fixed")
       g[pos.na] = 2*MAF
