@@ -39,9 +39,11 @@ Any variant with missing rate higher than this cutoff will be excluded from the 
 \item{min.maf}{a numeric value (default: 0.0001) to specify the cutoff of the minimal MAF. Any SNP with MAF < cutoff will be excluded from the analysis.}
 
 \item{CovAdj.cutoff}{a numeric value (default: 5e-5). If the p-value is less than this cutoff, then we would use an additional technic to adjust for covariates.}
+
+\item{G.model}{a character string specifying how to model the effect of heterozygosity: "Add" (additive, default), "Dom" (dominant), or "Rec" (recessive)}
 }
 \value{
-the function outputs to a file (output.file) with the following columns
+the function outputs to a file (output.file) with the following columns:
 \item{markerID}{marker IDs}
 \item{MAF}{Minor allele frequencies}
 \item{missing.rate}{Missing rates}

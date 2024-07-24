@@ -10,9 +10,10 @@
 #' @param ... Other arguments passed to function coxph(). For more details, please refer to package survival.
 #' @return an object with a class of "SPACox_NULL_Model".
 #' @examples
-#' Please check help(SPACox) for a simulated example.
+#' # Please check help(SPACox) for a simulated example.
 #' @export
 #' @import survival
+#' @import stats
 SPACox_Null_Model = function(formula,
                              data=NULL,
                              pIDs=NULL,
@@ -99,6 +100,7 @@ SPACox_Null_Model = function(formula,
 #' @param missing.cutoff a numeric value (default: 0.15) to specify the cutoff of the missing rates.
 #'                       Any variant with missing rate higher than this cutoff will be excluded from the analysis.
 #' @param CovAdj.cutoff a numeric value (default: 5e-5). If the p-value is less than this cutoff, then we would use an additional technic to adjust for covariates.
+#' @param G.model a character string specifying how to model the effect of heterozygosity: "Add" (additive, default), "Dom" (dominant), or "Rec" (recessive)
 #' @details To run SPACox, the following two steps are required:
 #' \itemize{
 #'   \item Step 1. Use function SPACox_Null_Model() to fit a null Cox model.
@@ -121,7 +123,7 @@ SPACox_Null_Model = function(formula,
 #' To avoid that, we ask users to specify the IDs of both phenotype data (pIDs) and genotype data (gIDs) when fitting the null model.
 #' Users are responsible to check the consistency between pIDs and formula, and the consistency between gIDs and Geno.mtx.
 #'
-#' @return an R matrix with the following columns
+#' @return an R matrix with the following columns:
 #' \item{MAF}{Minor allele frequencies}
 #' \item{missing.rate}{Missing rates}
 #' \item{p.value.spa}{p value (recommanded) from a saddlepoint approximation.}
@@ -155,7 +157,8 @@ SPACox_Null_Model = function(formula,
 #' # we recommand using column of 'p.value.spa' to associate genotype with time-to-event phenotypes
 #' head(SPACox.res)
 #'
-#' ## missing data in response/indicator variables is also supported. Please do not remove pIDs of subjects with missing data, the program will do it.
+#' ## missing data in response/indicator variables is also supported. Please do not remove pIDs of
+#' ## subjects with missing data, the program will do it.
 #' Phen.mtx$event[2] = NA
 #' Phen.mtx$Cov1[5] = NA
 #' obj.null = SPACox_Null_Model(Surv(time,event)~Cov1+Cov2, data=Phen.mtx,
@@ -221,9 +224,10 @@ SPACox = function(obj.null,
 #' SaddlePoint Approximation implementation of Cox regression surival analysis (One-SNP-version)
 #'
 #' One-SNP-version SPACox function. This function is to facilitate users that prefer reading and analyzing genotype line-by-line.
-#' @param g a numeric genotype vector. Missing genotype should be coded as NA. Both hard-called and imputed genotype data are supported.
-#' @param others the same as function SPACox. NOTE that we do not check subject order in this one-snp-version !!!
-#' @return the same as function SPACox.
+#' @param g a numeric genotype vector. Missing genotype should be coded as NA. Both hard-called and imputed genotype
+#'   data are supported. NOTE that we do not check subject order in this one-snp-version!!!
+#' @inheritParams SPACox
+#' @inherit SPACox return
 #' @export
 SPACox.one.SNP = function(g,
                           obj.null,
@@ -240,6 +244,10 @@ SPACox.one.SNP = function(g,
   N = length(g)
   pos.na = which(is.na(g))
   missing.rate = length(pos.na)/N
+
+  if(missing.rate == 1){
+    return(c(NA, 1, NA, NA, NA, NA, NA))
+  }
 
   if(missing.rate != 0){
     if(impute.method=="fixed")
@@ -422,7 +430,7 @@ check_input = function(pIDs, gIDs, obj.coxph, range)
 
 check_input1 = function(obj.null, Geno.mtx, par.list)
 {
-  if(class(obj.null)!="SPACox_NULL_Model")
+  if(!inherits(obj.null, "SPACox_NULL_Model"))
     stop("obj.null should be a returned outcome from SPACox_Null_Model()")
 
   if(any(obj.null$gIDs != rownames(Geno.mtx))) stop("gIDs should be the same as rownames(Geno.mtx).")

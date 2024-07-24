@@ -16,12 +16,36 @@ SPACox.one.SNP(
 )
 }
 \arguments{
-\item{g}{a numeric genotype vector. Missing genotype should be coded as NA. Both hard-called and imputed genotype data are supported.}
+\item{g}{a numeric genotype vector. Missing genotype should be coded as NA. Both hard-called and imputed genotype
+data are supported. NOTE that we do not check subject order in this one-snp-version!!!}
 
-\item{others}{the same as function SPACox. NOTE that we do not check subject order in this one-snp-version !!!}
+\item{obj.null}{an R object returned from function SPACox_Null_Model()}
+
+\item{Cutoff}{a numeric value (Default: 2) to specify the standard deviation cutoff to be used.
+If the test statistic lies within the standard deviation cutoff, its p value is calculated based on a normal distribution approximation,
+otherwise, its p value is calculated based on a saddlepoint approximation.}
+
+\item{impute.method}{a character string (default: "fixed") to specify the method to impute missing genotypes.
+"fixed" imputes missing genotypes (NA) by assigning the mean genotype value (i.e. 2p where p is MAF).}
+
+\item{missing.cutoff}{a numeric value (default: 0.15) to specify the cutoff of the missing rates.
+Any variant with missing rate higher than this cutoff will be excluded from the analysis.}
+
+\item{min.maf}{a numeric value (default: 0.0001) to specify the cutoff of the minimal MAF. Any SNP with MAF < cutoff will be excluded from the analysis.}
+
+\item{CovAdj.cutoff}{a numeric value (default: 5e-5). If the p-value is less than this cutoff, then we would use an additional technic to adjust for covariates.}
+
+\item{G.model}{a character string specifying how to model the effect of heterozygosity: "Add" (additive, default), "Dom" (dominant), or "Rec" (recessive)}
 }
 \value{
-the same as function SPACox.
+an R matrix with the following columns:
+\item{MAF}{Minor allele frequencies}
+\item{missing.rate}{Missing rates}
+\item{p.value.spa}{p value (recommanded) from a saddlepoint approximation.}
+\item{p.value.norm}{p value from a normal distribution approximation.}
+\item{Stat}{score statistics}
+\item{Var}{estimated variances of the score statistics}
+\item{z}{z values corresponding to the score statistics}
 }
 \description{
 One-SNP-version SPACox function. This function is to facilitate users that prefer reading and analyzing genotype line-by-line.

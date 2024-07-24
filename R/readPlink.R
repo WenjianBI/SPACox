@@ -1,19 +1,10 @@
 #' SaddlePoint Approximation implementation of a surival analysis (Plink input)
 #'
 #' A fast and accurate method for a genome-wide survival analysis on a large-scale dataset.
-#' @param obj.null an R object returned from function SPACox_Null_Model()
 #' @param plink.file character, represents the prefix of PLINK input file.
 #' @param output.file character, represents the prefix of output file.
 #' @param memory.chunk a numeric value (default: 4, unit=Gb) to specify how much memory is used to store genotype matrix from plink files.
-#' @param min.maf a numeric value (default: 0.0001) to specify the cutoff of the minimal MAF. Any SNP with MAF < cutoff will be excluded from the analysis.
-#' @param Cutoff a numeric value (Default: 2) to specify the standard deviation cutoff to be used.
-#'               If the test statistic lies within the standard deviation cutoff, its p value is calculated based on a normal distribution approximation,
-#'               otherwise, its p value is calculated based on a saddlepoint approximation.
-#' @param impute.method a character string (default: "fixed") to specify the method to impute missing genotypes.
-#'                      "fixed" imputes missing genotypes (NA) by assigning the mean genotype value (i.e. 2p where p is MAF).
-#' @param missing.cutoff a numeric value (default: 0.15) to specify the cutoff of the missing rates.
-#'                       Any variant with missing rate higher than this cutoff will be excluded from the analysis.
-#' @param CovAdj.cutoff a numeric value (default: 5e-5). If the p-value is less than this cutoff, then we would use an additional technic to adjust for covariates.
+#' @inheritParams SPACox
 #' @details To run SPACox, the following two steps are required:
 #' \itemize{
 #'   \item Step 1. Use function SPACox_Null_Model() to fit a null Cox model.
@@ -36,7 +27,7 @@
 #' To avoid that, we ask users to specify the IDs of both phenotype data (pIDs) and genotype data (gIDs) when fitting the null model.
 #' Users are responsible to check the consistency between pIDs and formula, and the consistency between gIDs and Geno.mtx(plink.file).
 #'
-#' @return the function outputs to a file (output.file) with the following columns
+#' @return the function outputs to a file (output.file) with the following columns:
 #' \item{markerID}{marker IDs}
 #' \item{MAF}{Minor allele frequencies}
 #' \item{missing.rate}{Missing rates}
@@ -69,6 +60,7 @@
 #' @export
 #' @import seqminer
 #' @import data.table
+#' @import utils
 SPACox.plink = function(obj.null,
                         plink.file,
                         output.file,

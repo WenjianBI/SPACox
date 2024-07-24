@@ -36,5 +36,5 @@ an object with a class of "SPACox_NULL_Model".
 Fits a null Cox proportional hazards model and then calculates the empirical cumulant generation function (CGF) of the martingale residuals
 }
 \examples{
-Please check help(SPACox) for a simulated example.
+# Please check help(SPACox) for a simulated example.
 }

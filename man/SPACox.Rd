@@ -35,9 +35,11 @@ Any variant with missing rate higher than this cutoff will be excluded from the 
 \item{min.maf}{a numeric value (default: 0.0001) to specify the cutoff of the minimal MAF. Any SNP with MAF < cutoff will be excluded from the analysis.}
 
 \item{CovAdj.cutoff}{a numeric value (default: 5e-5). If the p-value is less than this cutoff, then we would use an additional technic to adjust for covariates.}
+
+\item{G.model}{a character string specifying how to model the effect of heterozygosity: "Add" (additive, default), "Dom" (dominant), or "Rec" (recessive)}
 }
 \value{
-an R matrix with the following columns
+an R matrix with the following columns:
 \item{MAF}{Minor allele frequencies}
 \item{missing.rate}{Missing rates}
 \item{p.value.spa}{p value (recommanded) from a saddlepoint approximation.}
@@ -98,7 +100,8 @@ SPACox.res = SPACox(obj.null, Geno.mtx)
 # we recommand using column of 'p.value.spa' to associate genotype with time-to-event phenotypes
 head(SPACox.res)
 
-## missing data in response/indicator variables is also supported. Please do not remove pIDs of subjects with missing data, the program will do it.
+## missing data in response/indicator variables is also supported. Please do not remove pIDs of
+## subjects with missing data, the program will do it.
 Phen.mtx$event[2] = NA
 Phen.mtx$Cov1[5] = NA
 obj.null = SPACox_Null_Model(Surv(time,event)~Cov1+Cov2, data=Phen.mtx,
